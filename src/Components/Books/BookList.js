@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 
 
 const BookList = ({ books, deleteBook }) => {
+
+    const handleDelete = (index) => {
+        if(window.confirm('Voulez-vous vraiment supprimer ce livre ?')) {
+            deleteBook(index)
+        }
+    }
+
     return (
         <div>
             
@@ -30,7 +37,7 @@ const BookList = ({ books, deleteBook }) => {
                                 <Link to={`/edit/${index}`} style={{ marginLeft: '10px' }}  className="btn btn-outline-success" >Modifier</Link> 
                             </td>
                             <td>
-                                <button onClick={() => deleteBook(index)} style={{ marginLeft: '10px' }} className='btn btn-outline-danger'>
+                                <button onClick={() => handleDelete(index)} style={{ marginLeft: '10px' }} className='btn btn-outline-danger'>
                                     Supprimer
                                 </button>
                             </td>
