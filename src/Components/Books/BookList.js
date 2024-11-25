@@ -14,7 +14,7 @@ const BookList = ({ books, deleteBook }) => {
     return (
         <div>
             
-            <Link to="/add" className='btn btn-primary mb-4'>Ajouter un nouveau livre</Link>
+            <Link to="/add" className='btn btn-primary mb-4'>Add new Book</Link>
 
             <table className="table table-striped">
                 <thead> 
