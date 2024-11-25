@@ -1,41 +1,49 @@
-// src/components/EditBook.js
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const EditBook = ({ books, updateBook }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
-  // Convertir l'ID en entier
+
   const bookIndex = parseInt(id, 10);
-  
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
+  const [error, setError] = useState('');
 
-  // Charger le livre dans le formulaire
   useEffect(() => {
+    if (isNaN(bookIndex) || bookIndex < 0 || bookIndex >= books.length) {
+      console.log('Invalid book ID, navigating to /');
+      navigate('/');
+      return;
+    }
+
     const book = books[bookIndex];
     if (book) {
       setTitle(book.title);
       setAuthor(book.author);
     } else {
-      // Rediriger si le livre n'existe pas
+      console.log('Book not found, navigating to /');
       navigate('/');
     }
   }, [bookIndex, books, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title && author) {
-      updateBook(bookIndex, { title, author });
-      navigate('/');
+    if (!title.trim() || !author.trim()) {
+      setError('Veuillez remplir tous les champs.');
+      return;
     }
+
+    setError('');
+    updateBook(bookIndex, { title, author });
+    console.log('Navigating to / after submission');
+    navigate('/');
   };
 
   const mystyle = {
-    margin: "auto",
-    width: "30%",
-    padding: "10px",
+    margin: 'auto',
+    width: '30%',
+    padding: '10px',
   };
 
   return (
@@ -43,6 +51,7 @@ const EditBook = ({ books, updateBook }) => {
       <div className="card" style={mystyle}>
         <div className="card-header">Modifier le livre</div>
         <div className="card-body">
+          {error && <div className="alert alert-danger">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="col-auto mb-4">
               <label htmlFor="Titre" className="mb-2">Titre</label>
